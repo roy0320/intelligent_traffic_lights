@@ -9,7 +9,7 @@ epochs: 1600
 n_cars: 1000
 weights_path: ''
 
-# SUMO params
-sumoBinary: ""
-sumoCmd: ""
-sumoTools: ""
+# SUMO params for colab
+sumoBinary: "/usr/share/sumo/bin/sumo"
+sumoCmd: "/content/intelligent_traffic_lights/src/cfg/sumo_config.sumocfg"
+sumoTools: "/usr/share/sumo/tools"

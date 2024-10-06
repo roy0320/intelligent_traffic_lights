@@ -1,3 +1,6 @@
+import os
+os.environ['SUMO_HOME'] = "/usr/share/sumo"  # colab
+
 import yaml
 import argparse
 from src.training import training

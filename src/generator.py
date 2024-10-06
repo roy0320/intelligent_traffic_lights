@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 import scipy.stats
 import math
@@ -23,7 +25,7 @@ def generate(max_steps, n_cars):
     car_gen_steps = np.rint(car_gen_steps)  # round every value to int -> effective steps when a car will be generated
     np.insert(car_gen_steps, 0, 0)
     # produce the file for cars generation, one car per line
-    with open("./cfg/episode_routes.rou.xml", "r+") as routes:
+    with open(os.path.join(os.path.dirname(__file__), "cfg", "episode_routes.rou.xml"), "r+") as routes:
         print("""<routes>
         <vType accel="1.0" decel="4.5" id="standard_car" length="5.0" minGap="2.5" maxSpeed="25" sigma="0.5" />
         <route id="W_N" edges="W2TL TL2N"/>
