@@ -10,6 +10,8 @@ import torch.nn as nn
 import numpy as np
 from tqdm import tqdm
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 
 def weights_init(m):
     if isinstance(m, nn.Conv2d) or isinstance(m, nn.Linear):
@@ -23,6 +25,7 @@ def soft_update(local_model, target_model, tau):
 
 def train_net(q, q_target, memory, optimizer, batch_size, gamma):
     state, a, r, state_prime, done_mask = memory.sample(batch_size)
+    a, r, done_mask = a.to(device), r.to(device), done_mask.to(device)
 
     q_out = q(state)
     q_a = q_out.gather(1, a)
@@ -53,7 +56,7 @@ def training(config):
     sumoCmd = config['sumoCmd']
     sys.path.append(os.path.join(config['sumoTools']))
 
-    q = DQNetwork()
+    q = DQNetwork().to(device)
 
     try:
         q.load_state_dict(torch.load(weights_path))
@@ -61,7 +64,7 @@ def training(config):
         q.apply(weights_init)
         print('No model weights found, initializing xavier_uniform')
 
-    q_target = DQNetwork()
+    q_target = DQNetwork().to(device)
     q_target.load_state_dict(q.state_dict())
 
     memory = DQNBuffer(buffer_limit, 0.)

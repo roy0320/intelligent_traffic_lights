@@ -1,5 +1,5 @@
-from dqn import DQNetwork
-from env import SumoIntersection
+from src.dqn import DQNetwork
+from src.env import SumoIntersection
 import torch
 
 BATCH_SIZE = 32
@@ -10,11 +10,13 @@ sumoBinary = "/usr/local/opt/sumo/share/sumo/bin/sumo-gui"
 sumoCmd = "/Users/suess_mann/wd/tcqdrl/tca/src/cfg/sumo_config.sumocfg"
 
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 if __name__ == '__main__':
-    q = DQNetwork()
+    q = DQNetwork().to("device")
     q.eval()
     try:
-        q.load_state_dict(torch.load(WEIGHTS_PATH))
+        q.load_state_dict(torch.load(WEIGHTS_PATH, weights_only=True))
     except FileNotFoundError:
         print('No model weights found')
 
@@ -29,12 +31,3 @@ if __name__ == '__main__':
         s_prime, r, done, info = env.step(a)
         print(r)
         s = s_prime
-
-
-
-
-
-
-
-
-
